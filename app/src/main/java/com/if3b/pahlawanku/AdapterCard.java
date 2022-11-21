@@ -1,5 +1,7 @@
 package com.if3b.pahlawanku;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -30,6 +34,28 @@ public class AdapterCard extends RecyclerView.Adapter<AdapterCard.ClassViewHolde
         ModelPahlawan pahlawan = dataPahlawan.get(position);
         holder.tvNama.setText(pahlawan.getNama());
         holder.tvTentang.setText(pahlawan.getTentang());
+        Glide
+                .with(holder.itemView.getContext())
+                .load(pahlawan.getFoto())
+                .centerCrop()
+                .into(holder.ivFoto);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String xNama, xTentang, xFoto;
+                xNama = pahlawan.getNama();
+                xTentang =pahlawan.getTentang();
+                xFoto = pahlawan.getFoto();
+
+                Log.d( "onClick:", xNama+ " | " + xTentang + " | " + xFoto);
+
+                Intent kirim = new Intent(holder.itemView.getContext(), DetailActivity.class);
+                kirim.putExtra("xNama", xNama);
+                kirim.putExtra("xTentang", xTentang);
+                kirim.putExtra("xFoto", xFoto);
+            }
+        });
     }
 
     @Override
